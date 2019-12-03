@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+td {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+}
+
+table {
+  margin: 0 auto;
+}
