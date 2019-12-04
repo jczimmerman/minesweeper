@@ -48,6 +48,7 @@ const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
   if (event.button == 0){
     if(gridObject.isFlagged === false){
+      event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
         event.target.textContent = '💣';
         for (let row = 0; row < 9; row++) {
