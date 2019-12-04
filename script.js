@@ -10,11 +10,14 @@ for (row = 0; row < 9; row++) {
     })
     let cell = document.createElement('td');
     tableRow.appendChild(cell);
-    cell.addEventListener("click", tileReveal)
+    cell.addEventListener("mousedown", tileReveal);
   }
   document.querySelector('table').appendChild(tableRow);
 }
 
 function tileReveal(event) {
-  console.log("testeetatsetse");
+  event.preventDefault();
+  if (event.button == 2){
+    console.log("right");
+  }
 }
