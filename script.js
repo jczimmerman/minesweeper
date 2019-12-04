@@ -66,3 +66,16 @@ const tileReveal = (event) => {
   }
 }
 drawGrid();
+
+function bombPlacement(){
+  for(bombz = 0; bombz <= 9; bombz++){
+    let x = Math.floor(Math.random() * Math.floor(9));
+    let y = Math.floor(Math.random() * Math.floor(9));
+    console.log(grid[x][y]);
+    if(grid[x][y].isBomb !== true){
+      grid[x][y].isBomb = true;
+    }
+  }
+}
+
+bombPlacement();
