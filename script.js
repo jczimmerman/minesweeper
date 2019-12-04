@@ -49,12 +49,14 @@ const tileReveal = (event) => {
   if (event.button == 0){
     if(gridObject.isFlagged === false){
       if (gridObject.isBomb === true) {
-        event.target.textContent = '💣';
         for (let row = 0; row < 9; row++) {
           for (let column = 0; column < 9; column++) {
-            document.querySelectorAll('tr')[row].children[column].removeEventListener('mousedown', tileReveal);
+            let square = document.querySelectorAll('tr')[row].children[column]
+            square.removeEventListener('mousedown', tileReveal);
+            if (grid[row][column].isBomb) square.textContent = '💣';
           }
         }
+        event.target.textContent = '💥';
       } else event.target.textContent = bombCheck(gridObject);
     }
   }
