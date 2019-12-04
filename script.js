@@ -12,6 +12,9 @@ const drawGrid = () => {
       let cell = document.createElement('td');
       tableRow.appendChild(cell);
       cell.addEventListener("mousedown", tileReveal)
+      cell.addEventListener("contextmenu", event =>{
+        event.preventDefault();
+      });
     }
     document.querySelector('table').appendChild(tableRow);
   }
