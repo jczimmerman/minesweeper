@@ -27,18 +27,32 @@ const elementToGrid = (element) => {
   return grid[gridRow][gridColumn];
 }
 
+const bombCheck = (cell) => {
+  let bombCount = 0;
+  let row = grid.findIndex(array => array.includes(cell));
+  let column = grid[row].indexOf(cell);
+  for (let y = -1; y <= 1; y++) {
+    if (grid[row + y] !== undefined) {
+      for (let x = -1; x <= 1; x++) {
+        if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)) bombCount += 1;
+      }
+    }
+  }
+  return bombCount;
+}
+
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
   if (event.button == 0){
     if(gridObject.isFlagged === false){
       if (gridObject.isBomb === true) {
-        console.log(`You hit a bomb!`);
+        event.target.textContent = '💣';
         for (let row = 0; row < 9; row++) {
           for (let column = 0; column < 9; column++) {
-            document.querySelectorAll('tr')[row].children[column].removeEventListener('click', tileReveal);
+            document.querySelectorAll('tr')[row].children[column].removeEventListener('mousedown', tileReveal);
           }
         }
-      }
+      } else event.target.textContent = bombCheck(gridObject);
     }
   }
   if (event.button == 2){
