@@ -12,6 +12,9 @@ const drawGrid = () => {
       let cell = document.createElement('td');
       tableRow.appendChild(cell);
       cell.addEventListener("mousedown", tileReveal)
+      cell.addEventListener("contextmenu", event =>{
+        event.preventDefault();
+      });
     }
     document.querySelector('table').appendChild(tableRow);
   }
@@ -45,13 +48,16 @@ const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
   if (event.button == 0){
     if(gridObject.isFlagged === false){
+      event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
-        event.target.textContent = '💣';
         for (let row = 0; row < 9; row++) {
           for (let column = 0; column < 9; column++) {
-            document.querySelectorAll('tr')[row].children[column].removeEventListener('mousedown', tileReveal);
+            let square = document.querySelectorAll('tr')[row].children[column]
+            square.removeEventListener('mousedown', tileReveal);
+            if (grid[row][column].isBomb) square.textContent = '💣';
           }
         }
+        event.target.textContent = '💥';
       } else event.target.textContent = bombCheck(gridObject);
     }
   }
