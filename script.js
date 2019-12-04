@@ -65,5 +65,4 @@ const tileReveal = (event) => {
     }
   }
 }
-
 drawGrid();
