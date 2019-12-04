@@ -74,7 +74,7 @@ const tileReveal = (event) => {
 drawGrid();
 
 function bombPlacement(){
-  for(bombz = 0; bombz <= 9; bombz++){
+  for(bombz = 0; bombz <= 10; bombz++){
     let x = Math.floor(Math.random() * Math.floor(9));
     let y = Math.floor(Math.random() * Math.floor(9));
     console.log(grid[x][y]);
