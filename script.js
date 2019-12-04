@@ -24,8 +24,6 @@ const elementToGrid = (element) => {
   let gridRow;
   for (let i = 0; i < 9; i++){
     if (element.parentNode.children[i] === element) gridColumn = i;
-  }
-  for (let i = 0; i < 9; i++){
     if (document.querySelector('table').children[i] === element.parentNode) gridRow = i;
   }
   return grid[gridRow][gridColumn];
