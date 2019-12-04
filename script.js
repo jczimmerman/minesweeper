@@ -29,13 +29,25 @@ const elementToGrid = (element) => {
 
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
-  console.log("testeetatsetse");
-  if (gridObject.isBomb === true) {
-    console.log(`You hit a bomb!`);
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        document.querySelectorAll('tr')[row].children[column].removeEventListener('click', tileReveal);
+  if (event.button == 0){
+    if(gridObject.isFlagged === false){
+      if (gridObject.isBomb === true) {
+        console.log(`You hit a bomb!`);
+        for (let row = 0; row < 9; row++) {
+          for (let column = 0; column < 9; column++) {
+            document.querySelectorAll('tr')[row].children[column].removeEventListener('click', tileReveal);
+          }
+        }
       }
+    }
+  }
+  if (event.button == 2){
+    if (gridObject.isFlagged === false){
+      gridObject.isFlagged = true;
+      event.target.textContent = "f";
+    }else{
+      gridObject.isFlagged = false;
+      event.target.textContent = "";
     }
   }
 }
