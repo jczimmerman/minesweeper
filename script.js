@@ -104,4 +104,25 @@ function bombPlacement() {
   }
 }
 
+//for testing purposes
+const win = () => {
+  for (let row = 0; row < 9; row++) {
+    for (let column = 0; column < 9; column++) {
+      document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
+      if (grid[row][column].isBomb) {
+        grid[row][column].isFlagged = true;
+        document.querySelectorAll('tr')[row].children[column].textContent = "🚩";
+      }
+    }
+  }
+  if (gameWon(grid, document.querySelectorAll('td'))) {
+    let message = document.createElement('p');
+    message.textContent = 'You win!';
+    document.body.appendChild(message);
+    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+    }
+  }
+}
+
 bombPlacement();
