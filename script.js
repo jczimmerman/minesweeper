@@ -44,9 +44,39 @@ const bombCheck = (cell) => {
   return bombCount;
 }
 
+const firstClick = (gridObject) =>{
+  let row = grid.findIndex(array => array.includes(gridObject));
+  let column = grid[row].indexOf(gridObject);
+  for (let y = -1; y <= 1; y++) {
+    if (grid[row + y] !== undefined) {
+      for (let x = -1; x <= 1; x++) {
+        if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)){
+          grid[row + y][column + x].isBomb = false;
+          bombPlacement(9, 1);
+        };
+      }
+    }
+  }
+}
+
+let first = true;
+
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
+  const firstCheck = () =>{
+    first = false;
+    if (bombCheck(gridObject) > 0){
+      firstClick(gridObject);
+      firstCheck();
+    }
+  }
+
   if (event.button == 0){
+    if(first === true){
+      bombPlacement(9, 10);
+      firstCheck();
+    }
+    
     if(gridObject.isFlagged === false){
       event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
@@ -73,14 +103,13 @@ const tileReveal = (event) => {
 }
 drawGrid();
 
-function bombPlacement(){
-  for(bombz = 0; bombz <= 10; bombz++){
-    let x = Math.floor(Math.random() * Math.floor(9));
-    let y = Math.floor(Math.random() * Math.floor(9));
+const bombPlacement = (size, amt) =>{
+  for(bombz = 0; bombz < amt; bombz++){
+    let x = Math.floor(Math.random() * Math.floor(size));
+    let y = Math.floor(Math.random() * Math.floor(size));
     if(grid[x][y].isBomb !== true){
       grid[x][y].isBomb = true;
     }
   }
 }
 
-bombPlacement();
