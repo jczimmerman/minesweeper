@@ -7,7 +7,8 @@ const drawGrid = () => {
     for (column = 0; column < 9; column++) {
       grid[row].push({
         isFlagged: false,
-        isBomb: false
+        isBomb: false,
+        expanded: false
       })
       let cell = document.createElement('td');
       tableRow.appendChild(cell);
@@ -44,16 +45,35 @@ const bombCheck = (cell) => {
   return bombCount;
 }
 
-const firstClick = (gridObject) =>{
+const firstClick = (gridObject) => {
   let row = grid.findIndex(array => array.includes(gridObject));
   let column = grid[row].indexOf(gridObject);
   for (let y = -1; y <= 1; y++) {
     if (grid[row + y] !== undefined) {
       for (let x = -1; x <= 1; x++) {
-        if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)){
+        if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)) {
           grid[row + y][column + x].isBomb = false;
           bombPlacement(9, 1);
         };
+      }
+    }
+  }
+}
+
+const expand = (gridObject) => {
+  let row = grid.findIndex(array => array.includes(gridObject));
+  let column = grid[row].indexOf(gridObject);
+  for (let y = -1; y <= 1; y++) {
+    if (grid[row + y] !== undefined) {
+      for (let x = -1; x <= 1; x++) {
+        if ((grid[row + y][column + x] !== undefined)) {
+          let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
+          elementObject.textContent = bombCheck(grid[row + y][column + x]);
+          if ((elementObject.textContent === '0') && (grid[row + y][column + x].expanded === false)){
+            grid[row + y][column + x].expanded = true;
+            expand(grid[row + y][column + x]);
+          }
+        }
       }
     }
   }
@@ -75,16 +95,16 @@ let first = true;
 
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
-  const firstCheck = () =>{
+  const firstCheck = () => {
     first = false;
-    if (bombCheck(gridObject) > 0){
+    if (bombCheck(gridObject) > 0) {
       firstClick(gridObject);
       firstCheck();
     }
   }
 
-  if (event.button == 0){
-    if(first === true){
+  if (event.button == 0) {
+    if (first === true) {
       bombPlacement(9, 10);
       firstCheck();
     }
@@ -100,7 +120,10 @@ const tileReveal = (event) => {
           }
         }
         event.target.textContent = '💥';
-      } else event.target.textContent = bombCheck(gridObject);
+      } else {
+        event.target.textContent = bombCheck(gridObject);
+        if (event.target.textContent === '0') expand(elementToGrid(event.target));
+      }
     }
   }
   if (event.button == 2) {
@@ -116,19 +139,24 @@ const tileReveal = (event) => {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
-    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+    for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
 }
 drawGrid();
 
+<<<<<<< HEAD
 const bombPlacement = (size, amt) =>{
   let counter = 0;
   for(bombz = 0; bombz < amt; bombz++){
+=======
+const bombPlacement = (size, amt) => {
+  for (bombz = 0; bombz < amt; bombz++) {
+>>>>>>> added expand function that reveals all adjascent zero tiles when a zero is clicked
     let x = Math.floor(Math.random() * Math.floor(size));
     let y = Math.floor(Math.random() * Math.floor(size));
-    if(grid[x][y].isBomb !== true){
+    if (grid[x][y].isBomb !== true) {
       grid[x][y].isBomb = true;
     }
     else{
@@ -154,9 +182,8 @@ const win = () => {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
-    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+    for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
 }
-
