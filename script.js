@@ -64,7 +64,7 @@ const tileReveal = (event) => {
   if (event.button == 2){
     if (gridObject.isFlagged === false){
       gridObject.isFlagged = true;
-      event.target.textContent = "f";
+      event.target.textContent = "🚩";
     }else{
       gridObject.isFlagged = false;
       event.target.textContent = "";
