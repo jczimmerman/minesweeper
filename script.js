@@ -7,7 +7,8 @@ const drawGrid = () => {
     for (column = 0; column < 9; column++) {
       grid[row].push({
         isFlagged: false,
-        isBomb: false
+        isBomb: false,
+        expanded: false
       })
       let cell = document.createElement('td');
       tableRow.appendChild(cell);
@@ -44,6 +45,40 @@ const bombCheck = (cell) => {
   return bombCount;
 }
 
+const firstClick = (gridObject) => {
+  let row = grid.findIndex(array => array.includes(gridObject));
+  let column = grid[row].indexOf(gridObject);
+  for (let y = -1; y <= 1; y++) {
+    if (grid[row + y] !== undefined) {
+      for (let x = -1; x <= 1; x++) {
+        if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)) {
+          grid[row + y][column + x].isBomb = false;
+          bombPlacement(9, 1);
+        };
+      }
+    }
+  }
+}
+
+const expand = (gridObject) => {
+  let row = grid.findIndex(array => array.includes(gridObject));
+  let column = grid[row].indexOf(gridObject);
+  for (let y = -1; y <= 1; y++) {
+    if (grid[row + y] !== undefined) {
+      for (let x = -1; x <= 1; x++) {
+        if ((grid[row + y][column + x] !== undefined)) {
+          let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
+          elementObject.textContent = bombCheck(grid[row + y][column + x]);
+          if ((elementObject.textContent === '0') && (grid[row + y][column + x].expanded === false)){
+            grid[row + y][column + x].expanded = true;
+            expand(grid[row + y][column + x]);
+          }
+        }
+      }
+    }
+  }
+}
+
 const gameWon = (grid, elements) => {
   for (let i = 0; i < elements.length; i++) {
     if (elements[i].textContent === '') return false;
@@ -56,9 +91,23 @@ const gameWon = (grid, elements) => {
   return true;
 }
 
+let first = true;
+
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
+  const firstCheck = () => {
+    first = false;
+    if (bombCheck(gridObject) > 0) {
+      firstClick(gridObject);
+      firstCheck();
+    }
+  }
+
   if (event.button == 0) {
+    if (first === true) {
+      bombPlacement(9, 10);
+      firstCheck();
+    }
     if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
@@ -71,7 +120,10 @@ const tileReveal = (event) => {
           }
         }
         event.target.textContent = '💥';
-      } else event.target.textContent = bombCheck(gridObject);
+      } else {
+        event.target.textContent = bombCheck(gridObject);
+        if (event.target.textContent === '0') expand(elementToGrid(event.target));
+      }
     }
   }
   if (event.button == 2) {
@@ -87,25 +139,31 @@ const tileReveal = (event) => {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
-    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+    for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
 }
 drawGrid();
 
-function bombPlacement() {
-  for (bombz = 0; bombz <= 10; bombz++) {
-    let x = Math.floor(Math.random() * Math.floor(9));
-    let y = Math.floor(Math.random() * Math.floor(9));
+const bombPlacement = (size, amt) => {
+  let counter = 0;
+  for (bombz = 0; bombz < amt; bombz++) {
+    let x = Math.floor(Math.random() * Math.floor(size));
+    let y = Math.floor(Math.random() * Math.floor(size));
     if (grid[x][y].isBomb !== true) {
       grid[x][y].isBomb = true;
     }
+    else{
+      counter++;
+    }
   }
+  if (counter !== 0) bombPlacement(9, counter);
 }
 
 //for testing purposes
 const win = () => {
+  bombPlacement(9, 10);
   for (let row = 0; row < 9; row++) {
     for (let column = 0; column < 9; column++) {
       document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
@@ -119,7 +177,7 @@ const win = () => {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
-    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+    for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
@@ -137,6 +195,7 @@ const resetboi = () => {
   let tableEl=document.querySelector('table');
   clearboi(tableEl);
   drawGrid();
+  bombPlacement();
 }
 
 let buttonEl = document.querySelector('button');
