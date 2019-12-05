@@ -146,14 +146,8 @@ const tileReveal = (event) => {
 }
 drawGrid();
 
-<<<<<<< HEAD
-const bombPlacement = (size, amt) =>{
-  let counter = 0;
-  for(bombz = 0; bombz < amt; bombz++){
-=======
 const bombPlacement = (size, amt) => {
   for (bombz = 0; bombz < amt; bombz++) {
->>>>>>> added expand function that reveals all adjascent zero tiles when a zero is clicked
     let x = Math.floor(Math.random() * Math.floor(size));
     let y = Math.floor(Math.random() * Math.floor(size));
     if (grid[x][y].isBomb !== true) {
