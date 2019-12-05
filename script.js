@@ -55,6 +55,7 @@ const tileReveal = (event) => {
             let square = document.querySelectorAll('tr')[row].children[column]
             square.removeEventListener('mousedown', tileReveal);
             if (grid[row][column].isBomb) square.textContent = '💣';
+            if (!grid[row][column].isBomb && grid[row][column].isFlagged) square.textContent= '❌';
           }
         }
         event.target.textContent = '💥';
