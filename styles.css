@@ -21,3 +21,7 @@ button {
   text-align: center;
   color: green;
 }
+
+p {
+  margin: 0 auto;
+}

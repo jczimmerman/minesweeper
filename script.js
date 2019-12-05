@@ -12,7 +12,7 @@ const drawGrid = () => {
       let cell = document.createElement('td');
       tableRow.appendChild(cell);
       cell.addEventListener("mousedown", tileReveal)
-      cell.addEventListener("contextmenu", event =>{
+      cell.addEventListener("contextmenu", event => {
         event.preventDefault();
       });
     }
@@ -23,7 +23,7 @@ const drawGrid = () => {
 const elementToGrid = (element) => {
   let gridColumn;
   let gridRow;
-  for (let i = 0; i < 9; i++){
+  for (let i = 0; i < 9; i++) {
     if (element.parentNode.children[i] === element) gridColumn = i;
     if (document.querySelector('table').children[i] === element.parentNode) gridRow = i;
   }
@@ -44,10 +44,22 @@ const bombCheck = (cell) => {
   return bombCount;
 }
 
+const gameWon = (grid, elements) => {
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].textContent === '') return false;
+  }
+  for (let row of grid) {
+    for (let cell of row) {
+      if (cell.isFlagged && !cell.isBomb) return false;
+    }
+  }
+  return true;
+}
+
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
-  if (event.button == 0){
-    if(gridObject.isFlagged === false){
+  if (event.button == 0) {
+    if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
         for (let row = 0; row < 9; row++) {
@@ -55,32 +67,78 @@ const tileReveal = (event) => {
             let square = document.querySelectorAll('tr')[row].children[column]
             square.removeEventListener('mousedown', tileReveal);
             if (grid[row][column].isBomb) square.textContent = '💣';
+            if (!grid[row][column].isBomb && grid[row][column].isFlagged) square.textContent = '❌';
           }
         }
         event.target.textContent = '💥';
       } else event.target.textContent = bombCheck(gridObject);
     }
   }
-  if (event.button == 2){
-    if (gridObject.isFlagged === false){
+  if (event.button == 2) {
+    if (gridObject.isFlagged === false) {
       gridObject.isFlagged = true;
-      event.target.textContent = "f";
-    }else{
+      event.target.textContent = "🚩";
+    } else {
       gridObject.isFlagged = false;
       event.target.textContent = "";
+    }
+  }
+  if (gameWon(grid, document.querySelectorAll('td'))) {
+    let message = document.createElement('p');
+    message.textContent = 'You win!';
+    document.body.appendChild(message);
+    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
 }
 drawGrid();
 
-function bombPlacement(){
-  for(bombz = 0; bombz <= 10; bombz++){
+function bombPlacement() {
+  for (bombz = 0; bombz <= 10; bombz++) {
     let x = Math.floor(Math.random() * Math.floor(9));
     let y = Math.floor(Math.random() * Math.floor(9));
-    if(grid[x][y].isBomb !== true){
+    if (grid[x][y].isBomb !== true) {
       grid[x][y].isBomb = true;
     }
   }
 }
 
+//for testing purposes
+const win = () => {
+  for (let row = 0; row < 9; row++) {
+    for (let column = 0; column < 9; column++) {
+      document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
+      if (grid[row][column].isBomb) {
+        grid[row][column].isFlagged = true;
+        document.querySelectorAll('tr')[row].children[column].textContent = "🚩";
+      }
+    }
+  }
+  if (gameWon(grid, document.querySelectorAll('td'))) {
+    let message = document.createElement('p');
+    message.textContent = 'You win!';
+    document.body.appendChild(message);
+    for (let i = 0; i < document.querySelectorAll('td').length; i ++) {
+      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+    }
+  }
+}
+
 bombPlacement();
+
+const clearboi = (element) => {
+  while(element.firstChild){
+    element.removeChild(element.firstChild);
+  }
+}
+
+const resetboi = () => {
+  let tableEl=document.querySelector('table');
+  clearboi(tableEl);
+  drawGrid();
+}
+
+let buttonEl = document.querySelector('button');
+buttonEl.textContent='reset';
+buttonEl.addEventListener('click', resetboi);
