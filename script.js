@@ -155,6 +155,23 @@ const tileReveal = (event) => {
     }
   }
 }
+
+let dropDown = document.getElementById('difficulty');
+dropDown.addEventListener('input', event => {
+  if (confirm('This will reset the current game.\nIs that okay?')) {
+    if (dropDown.selectedIndex === 0) {
+      size = 9;
+      bombTotal = 12;
+    } else if (dropDown.selectedIndex === 1) {
+      size = 12;
+      bombTotal = 40;
+    } else if (dropDown.selectedIndex === 2) {
+      size = 20;
+      bombTotal = 75;
+    }
+    resetboi();
+  }
+})
 drawGrid();
 
 const bombPlacement = (size, amt) => {
