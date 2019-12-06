@@ -166,7 +166,7 @@ dropDown.addEventListener('input', event => {
       bombTotal = 12;
     } else if (dropDown.selectedIndex === 1) {
       size = 12;
-      bombTotal = 40;
+      bombTotal = 20;
     } else if (dropDown.selectedIndex === 2) {
       size = 20;
       bombTotal = 60;
@@ -221,7 +221,7 @@ const clearboi = (element) => {
 
 const resetboi = () => {
   let tableEl=document.querySelector('table');
-  for(i=0; i < 9; i++){
+  for(i=0; i < size; i++){
     grid.pop([]);
   }
   first = true;
