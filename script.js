@@ -98,6 +98,8 @@ const gameWon = (grid, elements) => {
 }
 
 let first = true;
+let intervalId;
+let timerCounter = 0;
 
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
@@ -109,10 +111,17 @@ const tileReveal = (event) => {
     }
   }
 
+  const timer = () =>{
+    timerCounter += 1;
+    let timerEl = document.querySelector(".timer");
+    timerEl.textContent = timerCounter.toString().padStart(3, 0);
+  }
+
   if (event.button == 0) {
     if (first === true) {
       bombPlacement(size, bombTotal);
       firstCheck();
+      intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
@@ -131,6 +140,7 @@ const tileReveal = (event) => {
             }
           }
         }
+        clearInterval(intervalId);
         event.target.textContent = '💥';
       } else {
         event.target.classList.add('selected');
@@ -149,6 +159,7 @@ const tileReveal = (event) => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('td'))) {
+    clearInterval(intervalId);
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -166,7 +177,7 @@ dropDown.addEventListener('input', event => {
       bombTotal = 12;
     } else if (dropDown.selectedIndex === 1) {
       size = 12;
-      bombTotal = 40;
+      bombTotal = 20;
     } else if (dropDown.selectedIndex === 2) {
       size = 20;
       bombTotal = 60;
@@ -204,6 +215,7 @@ const win = () => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('td'))) {
+    clearInterval(intervalId);
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -220,6 +232,9 @@ const clearboi = (element) => {
 }
 
 const resetboi = () => {
+  clearInterval(intervalId);
+  timerCounter = 0;
+  document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
   let tableEl=document.querySelector('table');
   for(i=0; i < size; i++){
     grid.pop([]);
