@@ -4,6 +4,11 @@
   padding: 0;
 }
 
+body {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 tr {
   display: flex;
 }
@@ -24,15 +29,30 @@ table {
   margin: 0 auto;
 }
 
-button {
+button,
+select {
   width: 40px;
   height: 40px;
   text-align: center;
-  color: green;
+  color: blue;
+  background: lightgrey;
+  border-radius: 5px;
+  border: 1px solid grey;
+  margin: 0 3px;
+}
+
+select {
+  width: 160px;
 }
 
 p {
   margin: 0 auto;
+}
+
+#hud {
+  display: flex;
+  align-items: center;
+  margin: 40px 0 10px 0;
 }
 
 .selected {

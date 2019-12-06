@@ -225,5 +225,4 @@ const resetboi = () => {
 }
 
 let buttonEl = document.querySelector('button');
-buttonEl.textContent='reset';
 buttonEl.addEventListener('click', resetboi);

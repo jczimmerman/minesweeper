@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Minesweeper</title>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
-  </head>
 
-  <body>
+<head>
+  <meta charset="utf-8">
+  <title>Minesweeper</title>
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div id="hud">
+
+    <button name="Reset">Reset</button>
 
     <select id="difficulty">
 
@@ -19,8 +24,10 @@
 
     </select>
 
-    <table class="Board"></table>
+  </div>
 
-    <button name="reset"></button>
-  </body>
+  <table class="Board"></table>
+
+</body>
+
 </html>
