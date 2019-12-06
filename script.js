@@ -75,7 +75,7 @@ const expand = (gridObject) => {
           elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
           elementObject.removeEventListener('mousedown', tileReveal);
           elementObject.classList.add('selected');
-          if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)){
+          if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)) {
             grid[row + y][column + x].expanded = true;
             expand(grid[row + y][column + x]);
           }
@@ -86,12 +86,10 @@ const expand = (gridObject) => {
 }
 
 const gameWon = (grid, elements) => {
-  for (let i = 0; i < elements.length; i++) {
-    if (elements[i].textContent === '') return false;
-  }
-  for (let row of grid) {
-    for (let cell of row) {
-      if (cell.isFlagged && !cell.isBomb) return false;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if ((elements[y].children[x].textContent === '') && !grid[y][x].isBomb) return false;
+      if (grid[y][x].isFlagged && !grid[y][x].isBomb) return false;
     }
   }
   return true;
@@ -111,7 +109,7 @@ const tileReveal = (event) => {
     }
   }
 
-  const timer = () =>{
+  const timer = () => {
     timerCounter += 1;
     let timerEl = document.querySelector(".timer");
     timerEl.textContent = timerCounter.toString().padStart(3, 0);
@@ -158,8 +156,7 @@ const tileReveal = (event) => {
       event.target.textContent = "";
     }
   }
-  if (gameWon(grid, document.querySelectorAll('td'))) {
-    clearInterval(intervalId);
+  if (gameWon(grid, document.querySelectorAll('tr'))) {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -194,8 +191,7 @@ const bombPlacement = (size, amt) => {
     let y = Math.floor(Math.random() * Math.floor(size));
     if (grid[x][y].isBomb !== true) {
       grid[x][y].isBomb = true;
-    }
-    else{
+    } else {
       counter++;
     }
   }
@@ -214,8 +210,7 @@ const win = () => {
       }
     }
   }
-  if (gameWon(grid, document.querySelectorAll('td'))) {
-    clearInterval(intervalId);
+  if (gameWon(grid, document.querySelectorAll('tr'))) {
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -226,7 +221,7 @@ const win = () => {
 }
 
 const clearboi = (element) => {
-  while(element.firstChild){
+  while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
@@ -235,8 +230,8 @@ const resetboi = () => {
   clearInterval(intervalId);
   timerCounter = 0;
   document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
-  let tableEl=document.querySelector('table');
-  for(i=0; i < size; i++){
+  let tableEl = document.querySelector('table');
+  for (i = 0; i < 20; i++) {
     grid.pop([]);
   }
   first = true;
