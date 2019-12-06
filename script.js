@@ -93,6 +93,8 @@ const gameWon = (grid, elements) => {
 }
 
 let first = true;
+let intervalId;
+let timerCounter = 0;
 
 const tileReveal = (event) => {
   let gridObject = elementToGrid(event.target);
@@ -104,10 +106,17 @@ const tileReveal = (event) => {
     }
   }
 
+  const timer = () =>{
+    timerCounter += 1;
+    let timerEl = document.querySelector(".timer");
+    timerEl.textContent = timerCounter.toString().padStart(3, 0);
+  }
+
   if (event.button == 0) {
     if (first === true) {
       bombPlacement(9, 10);
       firstCheck();
+      intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
@@ -120,6 +129,7 @@ const tileReveal = (event) => {
             if (!grid[row][column].isBomb && grid[row][column].isFlagged) square.textContent = '❌';
           }
         }
+        clearInterval(intervalId);
         event.target.textContent = '💥';
       } else {
         event.target.textContent = bombCheck(gridObject);
@@ -137,6 +147,7 @@ const tileReveal = (event) => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('td'))) {
+    clearInterval(intervalId);
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -175,6 +186,7 @@ const win = () => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('td'))) {
+    clearInterval(intervalId);
     let message = document.createElement('p');
     message.textContent = 'You win!';
     document.body.appendChild(message);
@@ -183,8 +195,6 @@ const win = () => {
     }
   }
 }
-
-bombPlacement();
 
 const clearboi = (element) => {
   while(element.firstChild){
