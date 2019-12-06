@@ -4,6 +4,12 @@
   padding: 0;
 }
 
+html {
+  background: linear-gradient(white, lightgrey);
+  background-size: cover;
+  height: 100%;
+}
+
 body {
   width: fit-content;
   margin: 0 auto;
@@ -25,8 +31,15 @@ td {
   justify-content: center;
 }
 
+td:hover {
+  background-color: white;
+}
+
 table {
   margin: 0 auto;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
 }
 
 button,
@@ -42,8 +55,17 @@ select,
   margin: 0 3px;
 }
 
+button:hover {
+  background-color: red;
+  color: white;
+}
+
 select {
   width: 160px;
+}
+
+select:hover {
+  background-color: white;
 }
 
 p {
@@ -53,10 +75,19 @@ p {
 #hud {
   display: flex;
   align-items: center;
-  margin: 40px 0 10px 0;
+  margin: 40px 0 0 0;
+  border: 2px solid black;
+  border-bottom-width: 0px;
+  background-color: lightgrey;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  height: 60px;
 }
 
 .selected {
   box-shadow: 0 0 0 black;
 
+}
+
+.selected:hover {
+  background-color: lightgrey;
 }
