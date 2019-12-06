@@ -69,6 +69,7 @@ const expand = (gridObject) => {
         if ((grid[row + y][column + x] !== undefined)) {
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
           elementObject.textContent = bombCheck(grid[row + y][column + x]);
+          elementObject.removeEventListener('mousedown', tileReveal);
           if ((elementObject.textContent === '0') && (grid[row + y][column + x].expanded === false)){
             grid[row + y][column + x].expanded = true;
             expand(grid[row + y][column + x]);
