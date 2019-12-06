@@ -221,12 +221,13 @@ const clearboi = (element) => {
 
 const resetboi = () => {
   let tableEl=document.querySelector('table');
-  for(i=0; i < 9; i++){
+  for(i=0; i < size; i++){
     grid.pop([]);
   }
   first = true;
   clearboi(tableEl);
   drawGrid();
+  bombPlacement();
 }
 
 let buttonEl = document.querySelector('button');
