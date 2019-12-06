@@ -1,10 +1,12 @@
 let grid = [];
+let size = 9;
+let bombTotal = 12;
 
 const drawGrid = () => {
-  for (row = 0; row < 9; row++) {
+  for (row = 0; row < size; row++) {
     let tableRow = document.createElement('tr');
     grid.push([]);
-    for (column = 0; column < 9; column++) {
+    for (column = 0; column < size; column++) {
       grid[row].push({
         isFlagged: false,
         isBomb: false,
@@ -21,10 +23,12 @@ const drawGrid = () => {
   }
 }
 
+
+
 const elementToGrid = (element) => {
   let gridColumn;
   let gridRow;
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < size; i++) {
     if (element.parentNode.children[i] === element) gridColumn = i;
     if (document.querySelector('table').children[i] === element.parentNode) gridRow = i;
   }
@@ -53,7 +57,7 @@ const firstClick = (gridObject) => {
       for (let x = -1; x <= 1; x++) {
         if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)) {
           grid[row + y][column + x].isBomb = false;
-          bombPlacement(9, 1);
+          bombPlacement(size, 1);
         };
       }
     }
@@ -68,9 +72,10 @@ const expand = (gridObject) => {
       for (let x = -1; x <= 1; x++) {
         if ((grid[row + y][column + x] !== undefined)) {
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
-          elementObject.textContent = bombCheck(grid[row + y][column + x]);
+          elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
           elementObject.removeEventListener('mousedown', tileReveal);
-          if ((elementObject.textContent === '0') && (grid[row + y][column + x].expanded === false)){
+          elementObject.classList.add('selected');
+          if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)){
             grid[row + y][column + x].expanded = true;
             expand(grid[row + y][column + x]);
           }
@@ -114,26 +119,33 @@ const tileReveal = (event) => {
 
   if (event.button == 0) {
     if (first === true) {
-      bombPlacement(9, 10);
+      bombPlacement(size, bombTotal);
       firstCheck();
       intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
-        for (let row = 0; row < 9; row++) {
-          for (let column = 0; column < 9; column++) {
+        for (let row = 0; row < size; row++) {
+          for (let column = 0; column < size; column++) {
             let square = document.querySelectorAll('tr')[row].children[column]
             square.removeEventListener('mousedown', tileReveal);
-            if (grid[row][column].isBomb) square.textContent = '💣';
-            if (!grid[row][column].isBomb && grid[row][column].isFlagged) square.textContent = '❌';
+            if (grid[row][column].isBomb) {
+              square.textContent = '💣';
+              square.classList.add('selected');
+            }
+            if (!grid[row][column].isBomb && grid[row][column].isFlagged) {
+              square.textContent = '❌';
+              square.classList.add('selected');
+            }
           }
         }
         clearInterval(intervalId);
         event.target.textContent = '💥';
       } else {
-        event.target.textContent = bombCheck(gridObject);
-        if (event.target.textContent === '0') expand(elementToGrid(event.target));
+        event.target.classList.add('selected');
+        event.target.textContent = bombCheck(gridObject) === 0 ? ' ' : bombCheck(gridObject);
+        if (event.target.textContent === ' ') expand(elementToGrid(event.target));
       }
     }
   }
@@ -156,6 +168,23 @@ const tileReveal = (event) => {
     }
   }
 }
+
+let dropDown = document.getElementById('difficulty');
+dropDown.addEventListener('input', event => {
+  if (confirm('This will reset the current game.\nIs that okay?')) {
+    if (dropDown.selectedIndex === 0) {
+      size = 9;
+      bombTotal = 12;
+    } else if (dropDown.selectedIndex === 1) {
+      size = 12;
+      bombTotal = 40;
+    } else if (dropDown.selectedIndex === 2) {
+      size = 20;
+      bombTotal = 60;
+    }
+    resetboi();
+  }
+})
 drawGrid();
 
 const bombPlacement = (size, amt) => {
@@ -170,14 +199,14 @@ const bombPlacement = (size, amt) => {
       counter++;
     }
   }
-  if (counter !== 0) bombPlacement(9, counter);
+  if (counter !== 0) bombPlacement(size, counter);
 }
 
 //for testing purposes
 const win = () => {
-  bombPlacement(9, 10);
-  for (let row = 0; row < 9; row++) {
-    for (let column = 0; column < 9; column++) {
+  bombPlacement(size, bombTotal);
+  for (let row = 0; row < size; row++) {
+    for (let column = 0; column < size; column++) {
       document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
       if (grid[row][column].isBomb) {
         grid[row][column].isFlagged = true;
@@ -203,12 +232,17 @@ const clearboi = (element) => {
 }
 
 const resetboi = () => {
+  clearInterval(intervalId);
+  timerCounter = 0;
+  document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
   let tableEl=document.querySelector('table');
+  for(i=0; i < 9; i++){
+    grid.pop([]);
+  }
+  first = true;
   clearboi(tableEl);
   drawGrid();
-  bombPlacement();
 }
 
 let buttonEl = document.querySelector('button');
-buttonEl.textContent='reset';
 buttonEl.addEventListener('click', resetboi);

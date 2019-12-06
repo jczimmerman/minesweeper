@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Minesweeper</title>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
-  </head>
 
-  <body>
-    <table class="Board"></table>
+<head>
+  <meta charset="utf-8">
+  <title>Minesweeper</title>
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-    <button name="reset"></button>
+<body>
+
+  <div id="hud">
+
+    <button name="Reset">Reset</button>
+
+    <select id="difficulty">
+
+      <option value="easy">Easy (9x9, 12 bombs)</option>
+
+      <option value="medium">Medium (12x12, 40 bombs)</option>
+
+      <option value="hard">Hard (20x20, 60 bombs)</option>
+
+    </select>
 
     <div class="timer">000</div>
 
-    <div class="flagCount">00</div>
-  </body>
+  </div>
+
+  <table class="Board"></table>
+
+</body>
+
+
 </html>

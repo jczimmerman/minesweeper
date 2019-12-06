@@ -4,29 +4,59 @@
   padding: 0;
 }
 
+body {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+tr {
+  display: flex;
+}
+
 td {
+  display: flex;
   width: 40px;
   height: 40px;
-  border: 1px solid black;
-  text-align: center;
+  border: 1px solid grey;
+  background-color: lightgrey;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
 }
 
 table {
   margin: 0 auto;
 }
 
-button {
+button,
+select,
+.timer {
   width: 40px;
   height: 40px;
   text-align: center;
-  color: green;
+  color: blue;
+  background: lightgrey;
+  border-radius: 5px;
+  border: 1px solid grey;
+  margin: 0 3px;
+}
+
+select {
+  width: 160px;
 }
 
 p {
   margin: 0 auto;
 }
 
-.timer {
-  width: 100px;
-  height: 50px;
+#hud {
+  display: flex;
+  align-items: center;
+  margin: 40px 0 10px 0;
+}
+
+.selected {
+  box-shadow: 0 0 0 black;
+
 }
