@@ -1,4 +1,6 @@
 let grid = [];
+let size = 9;
+let bombTotal = 12;
 
 const drawGrid = () => {
   for (row = 0; row < 9; row++) {
@@ -70,8 +72,10 @@ const expand = (gridObject) => {
       for (let x = -1; x <= 1; x++) {
         if ((grid[row + y][column + x] !== undefined)) {
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
-          elementObject.textContent = bombCheck(grid[row + y][column + x]);
-          if ((elementObject.textContent === '0') && (grid[row + y][column + x].expanded === false)){
+          elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
+          elementObject.removeEventListener('mousedown', tileReveal);
+          elementObject.classList.add('selected');
+          if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)){
             grid[row + y][column + x].expanded = true;
             expand(grid[row + y][column + x]);
           }
@@ -117,14 +121,21 @@ const tileReveal = (event) => {
           for (let column = 0; column < 9; column++) {
             let square = document.querySelectorAll('tr')[row].children[column]
             square.removeEventListener('mousedown', tileReveal);
-            if (grid[row][column].isBomb) square.textContent = '💣';
-            if (!grid[row][column].isBomb && grid[row][column].isFlagged) square.textContent = '❌';
+            if (grid[row][column].isBomb) {
+              square.textContent = '💣';
+              square.classList.add('selected');
+            }
+            if (!grid[row][column].isBomb && grid[row][column].isFlagged) {
+              square.textContent = '❌';
+              square.classList.add('selected');
+            }
           }
         }
         event.target.textContent = '💥';
       } else {
-        event.target.textContent = bombCheck(gridObject);
-        if (event.target.textContent === '0') expand(elementToGrid(event.target));
+        event.target.classList.add('selected');
+        event.target.textContent = bombCheck(gridObject) === 0 ? ' ' : bombCheck(gridObject);
+        if (event.target.textContent === ' ') expand(elementToGrid(event.target));
       }
     }
   }
