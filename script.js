@@ -23,6 +23,8 @@ const drawGrid = () => {
   }
 }
 
+
+
 const elementToGrid = (element) => {
   let gridColumn;
   let gridRow;
@@ -219,9 +221,12 @@ const clearboi = (element) => {
 
 const resetboi = () => {
   let tableEl=document.querySelector('table');
+  for(i=0; i < 9; i++){
+    grid.pop([]);
+  }
+  first = true;
   clearboi(tableEl);
   drawGrid();
-  bombPlacement();
 }
 
 let buttonEl = document.querySelector('button');
