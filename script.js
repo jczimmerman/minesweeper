@@ -1,12 +1,13 @@
 let grid = [];
-let size = 9;
+let height = 9;
+let width = 9;
 let bombTotal = 12;
 
 const drawGrid = () => {
-  for (row = 0; row < size; row++) {
+  for (row = 0; row < height; row++) {
     let tableRow = document.createElement('tr');
     grid.push([]);
-    for (column = 0; column < size; column++) {
+    for (column = 0; column < width; column++) {
       grid[row].push({
         isFlagged: false,
         isBomb: false,
@@ -28,9 +29,11 @@ const drawGrid = () => {
 const elementToGrid = (element) => {
   let gridColumn;
   let gridRow;
-  for (let i = 0; i < size; i++) {
-    if (element.parentNode.children[i] === element) gridColumn = i;
-    if (document.querySelector('table').children[i] === element.parentNode) gridRow = i;
+  for (let x = 0; x < width; x++) {
+    if (element.parentNode.children[x] === element) gridColumn = x;
+  }
+  for (let y = 0; y < height; y++) {
+    if (document.querySelector('table').children[y] === element.parentNode) gridRow = y;
   }
   return grid[gridRow][gridColumn];
 }
@@ -57,7 +60,7 @@ const firstClick = (gridObject) => {
       for (let x = -1; x <= 1; x++) {
         if ((grid[row + y][column + x] !== undefined) && (grid[row + y][column + x].isBomb)) {
           grid[row + y][column + x].isBomb = false;
-          bombPlacement(size, 1);
+          bombPlacement(height, width, 1);
         };
       }
     }
@@ -86,8 +89,8 @@ const expand = (gridObject) => {
 }
 
 const gameWon = (grid, elements) => {
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
       if ((elements[y].children[x].textContent === '') && !grid[y][x].isBomb) return false;
       if (grid[y][x].isFlagged && !grid[y][x].isBomb) return false;
     }
@@ -120,15 +123,15 @@ const tileReveal = (event) => {
 
   if (event.button == 0) {
     if (first === true) {
-      bombPlacement(size, bombTotal);
+      bombPlacement(height, width, bombTotal);
       firstCheck();
       intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
       event.target.removeEventListener("mousedown", tileReveal);
       if (gridObject.isBomb === true) {
-        for (let row = 0; row < size; row++) {
-          for (let column = 0; column < size; column++) {
+        for (let row = 0; row < height; row++) {
+          for (let column = 0; column < width; column++) {
             let square = document.querySelectorAll('tr')[row].children[column]
             square.removeEventListener('mousedown', tileReveal);
             if (grid[row][column].isBomb) {
@@ -173,13 +176,16 @@ let dropDown = document.getElementById('difficulty');
 dropDown.addEventListener('input', event => {
   if (confirm('This will reset the current game.\nIs that okay?')) {
     if (dropDown.selectedIndex === 0) {
-      size = 9;
+      height = 9;
+      width = 9;
       bombTotal = 12;
     } else if (dropDown.selectedIndex === 1) {
-      size = 12;
+      height = 12;
+      width = 12;
       bombTotal = 20;
     } else if (dropDown.selectedIndex === 2) {
-      size = 20;
+      height = 20;
+      width = 20;
       bombTotal = 60;
     }
     resetboi();
@@ -187,25 +193,25 @@ dropDown.addEventListener('input', event => {
 })
 drawGrid();
 
-const bombPlacement = (size, amt) => {
+const bombPlacement = (height, width, amt) => {
   let counter = 0;
   for (bombz = 0; bombz < amt; bombz++) {
-    let x = Math.floor(Math.random() * Math.floor(size));
-    let y = Math.floor(Math.random() * Math.floor(size));
-    if (grid[x][y].isBomb !== true) {
-      grid[x][y].isBomb = true;
+    let x = Math.floor(Math.random() * Math.floor(width));
+    let y = Math.floor(Math.random() * Math.floor(height));
+    if (grid[y][x].isBomb !== true) {
+      grid[y][x].isBomb = true;
     } else {
       counter++;
     }
   }
-  if (counter !== 0) bombPlacement(size, counter);
+  if (counter !== 0) bombPlacement(height, width, counter);
 }
 
 //for testing purposes
 const win = () => {
-  bombPlacement(size, bombTotal);
-  for (let row = 0; row < size; row++) {
-    for (let column = 0; column < size; column++) {
+  bombPlacement(height, width, bombTotal);
+  for (let row = 0; row < height; row++) {
+    for (let column = 0; column < width; column++) {
       document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
       if (grid[row][column].isBomb) {
         grid[row][column].isFlagged = true;
