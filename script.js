@@ -163,9 +163,7 @@ const tileReveal = (event) => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('tr'))) {
-    let message = document.createElement('p');
-    message.textContent = 'You win!';
-    document.body.appendChild(message);
+    document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
@@ -231,9 +229,7 @@ const win = () => {
     }
   }
   if (gameWon(grid, document.querySelectorAll('tr'))) {
-    let message = document.createElement('p');
-    message.textContent = 'You win!';
-    document.body.appendChild(message);
+    document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
@@ -255,6 +251,7 @@ const resetboi = () => {
     grid.pop([]);
   }
   first = true;
+  document.querySelector('p.win-message').textContent = '';
   clearboi(tableEl);
   drawGrid();
   bombPlacement();
