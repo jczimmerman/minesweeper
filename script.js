@@ -113,6 +113,9 @@ const tileReveal = (event) => {
     timerCounter += 1;
     let timerEl = document.querySelector(".timer");
     timerEl.textContent = timerCounter.toString().padStart(3, 0);
+    if(gameWon(grid, document.querySelectorAll('tr'))){
+      clearInterval(intervalId);
+    }
   }
 
   if (event.button == 0) {
