@@ -116,7 +116,7 @@ const tileReveal = (event) => {
     timerCounter += 1;
     let timerEl = document.querySelector(".timer");
     timerEl.textContent = timerCounter.toString().padStart(3, 0);
-    if(gameWon(grid, document.querySelectorAll('tr'))){
+    if (gameWon(grid, document.querySelectorAll('tr'))) {
       clearInterval(intervalId);
     }
   }
@@ -172,9 +172,18 @@ const tileReveal = (event) => {
   }
 }
 
+let customOpen = false;
 let dropDown = document.getElementById('difficulty');
 dropDown.addEventListener('input', event => {
-  if (confirm('This will reset the current game.\nIs that okay?')) {
+  if (dropDown.selectedIndex === 3) {
+    if (!customOpen) {
+      document.getElementById('custom-menu').style.display = 'flex';
+      customOpen = true;
+    } else {
+      document.getElementById('custom-menu').style.display = 'none';
+      customOpen = false;
+    }
+  } else if (confirm('This will reset the current game.\nDo you want to continue?')) {
     if (dropDown.selectedIndex === 0) {
       height = 9;
       width = 9;
@@ -188,21 +197,11 @@ dropDown.addEventListener('input', event => {
       width = 20;
       bombTotal = 60;
     }
+    document.getElementById('custom-menu').style.display = 'none';
+    customOpen = false;
     resetboi();
   }
 })
-
-let customOpen = false;
-document.querySelector('button.custom').addEventListener('mousedown', event => {
-  if (!customOpen) {
-    document.getElementById('custom-menu').style.display = 'flex';
-    customOpen = true;
-  }
-  else {
-    document.getElementById('custom-menu').style.display = 'none';
-    customOpen = false;
-  }
-});
 drawGrid();
 
 const bombPlacement = (height, width, amt) => {
@@ -248,11 +247,6 @@ const clearboi = (element) => {
 }
 
 const resetboi = () => {
-  document.getElementById('custom-menu').style.display = 'none';
-  customOpen = false;
-  height = Number(document.querySelector('input.height').value);
-  width = Number(document.querySelector('input.width').value);
-  bombTotal = Number(document.querySelector('input.bombs').value);
   clearInterval(intervalId);
   timerCounter = 0;
   document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
@@ -266,6 +260,37 @@ const resetboi = () => {
   bombPlacement();
 }
 
+const customReset = () => {
+  height = Math.floor(Number(document.querySelector('input.height').value));
+  if (height < 1) {
+    height = 1;
+    document.querySelector('input.height').value = 1;
+  }
+  width = Math.floor(Number(document.querySelector('input.width').value));
+  if (width < 9) {
+    width = 9;
+    document.querySelector('input.width').value = 9;
+  }
+  bombTotal = Math.floor(Number(document.querySelector('input.bombs').value));
+  if (height === 1) {
+    if (bombTotal > (height * width) - 3) {
+      bombTotal = (height * width) - 3;
+      document.querySelector('input.bombs').value = (height * width) - 3;
+    }
+  } else if (height === 2) {
+    if (bombTotal > (height * width) - 6) {
+      bombTotal = (height * width) - 6;
+      document.querySelector('input.bombs').value = (height * width) - 6;
+    } else {
+      if (bombTotal > (height * width) - 9) {
+        bombTotal = (height * width) - 9;
+        document.querySelector('input.bombs').value = (height * width) - 9;
+      }
+    }
+  }
+  resetboi();
+}
+
 let buttonEl = document.querySelector('button');
 buttonEl.addEventListener('click', resetboi);
-document.querySelector('#custom-menu button').addEventListener('click', resetboi);
+document.querySelector('#custom-menu button').addEventListener('click', customReset);

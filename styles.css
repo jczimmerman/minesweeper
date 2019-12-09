@@ -62,15 +62,6 @@ button:hover {
   color: white;
 }
 
-button.custom {
-  width: 50px;
-}
-
-button.custom:hover {
-  background-color: white;
-  color: black;
-}
-
 select {
   width: 160px;
 }
@@ -117,7 +108,6 @@ p {
 
 #custom-menu {
   display: none;
-  justify-content: center;
 }
 
 #difficultySelect {
