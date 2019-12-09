@@ -11,8 +11,8 @@ html {
 }
 
 body {
-  width: fit-content;
   margin: 0 auto;
+  width: fit-content;
 }
 
 tr {
@@ -20,15 +20,15 @@ tr {
 }
 
 td {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  border: 1px solid grey;
-  background-color: lightgrey;
-  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
-  font-weight: bold;
   align-items: center;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  display: flex;
+  font-weight: bold;
+  height: 40px;
   justify-content: center;
+  width: 40px;
 }
 
 td:hover {
@@ -36,23 +36,25 @@ td:hover {
 }
 
 table {
-  margin: 0 auto;
   border: 2px solid black;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 }
 
 button,
 select,
 .timer {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  color: blue;
+  align-items: center;
   background: lightgrey;
-  border-radius: 5px;
   border: 1px solid grey;
+  border-radius: 5px;
+  color: blue;
+  display: flex;
+  height: 40px;
+  justify-content: center;
   margin: 0 3px;
+  width: 40px;
 }
 
 button:hover {
@@ -72,17 +74,6 @@ p {
   margin: 0 auto;
 }
 
-#hud {
-  display: flex;
-  align-items: center;
-  margin: 40px 0 0 0;
-  border: 2px solid black;
-  border-bottom-width: 0px;
-  background-color: lightgrey;
-  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
-  height: 60px;
-}
-
 .selected {
   box-shadow: 0 0 0 black;
 
@@ -90,4 +81,15 @@ p {
 
 .selected:hover {
   background-color: lightgrey;
+}
+
+#hud {
+  align-items: center;
+  background-color: lightgrey;
+  border: 2px solid black;
+  border-bottom-width: 0px;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  display: flex;
+  height: 60px;
+  margin: 40px 0 0 0;
 }
