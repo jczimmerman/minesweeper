@@ -92,11 +92,6 @@ p {
   background-color: lightgrey;
 }
 
-#custom-menu {
-  display: flex;
-  justify-content: center;
-}
-
 #custom-menu input {
   width: 40px;
   height: 40px;
@@ -108,6 +103,7 @@ p {
   background-color: white;
   color: black;
 }
+
 #custom-menu,
 #hud {
   align-items: center;
@@ -117,6 +113,11 @@ p {
   box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
   display: flex;
   height: 60px;
+}
+
+#custom-menu {
+  display: none;
+  justify-content: center;
 }
 
 #difficultySelect {

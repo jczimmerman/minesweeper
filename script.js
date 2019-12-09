@@ -194,7 +194,15 @@ dropDown.addEventListener('input', event => {
 
 let customOpen = false;
 document.querySelector('button.custom').addEventListener('mousedown', event => {
-})
+  if (!customOpen) {
+    document.getElementById('custom-menu').style.display = 'flex';
+    customOpen = true;
+  }
+  else {
+    document.getElementById('custom-menu').style.display = 'none';
+    customOpen = false;
+  }
+});
 drawGrid();
 
 const bombPlacement = (height, width, amt) => {
@@ -240,6 +248,11 @@ const clearboi = (element) => {
 }
 
 const resetboi = () => {
+  document.getElementById('custom-menu').style.display = 'none';
+  customOpen = false;
+  height = Number(document.querySelector('input.height').value);
+  width = Number(document.querySelector('input.width').value);
+  bombTotal = Number(document.querySelector('input.bombs').value);
   clearInterval(intervalId);
   timerCounter = 0;
   document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
@@ -255,3 +268,4 @@ const resetboi = () => {
 
 let buttonEl = document.querySelector('button');
 buttonEl.addEventListener('click', resetboi);
+document.querySelector('#custom-menu button').addEventListener('click', resetboi);
