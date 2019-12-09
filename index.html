@@ -10,6 +10,10 @@
 
 <body>
 
+  <div id="difficultySelect">
+
+  </div>
+
   <div id="hud">
 
     <button name="Reset">Reset</button>
@@ -24,8 +28,23 @@
 
     </select>
 
+    <button class="custom" name="Custom">Custom Game</button>
+
     <div class="timer">000</div>
 
+  </div>
+
+  <div id="custom-menu">
+    <label>Height:
+      <input type="text" name="height" value="9">
+    </label>
+    <label>Width:
+      <input type="text" name="width" value="9">
+    </label>
+    <label>Bombs:
+      <input type="text" name="bombs" value="12">
+    </label>
+    <button type="submit" name="button">New Game</button>
   </div>
 
   <table class="Board"></table>

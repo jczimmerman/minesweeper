@@ -62,6 +62,15 @@ button:hover {
   color: white;
 }
 
+button.custom {
+  width: 50px;
+}
+
+button.custom:hover {
+  background-color: white;
+  color: black;
+}
+
 select {
   width: 160px;
 }
@@ -83,6 +92,23 @@ p {
   background-color: lightgrey;
 }
 
+#custom-menu {
+  display: flex;
+  justify-content: center;
+}
+
+#custom-menu input {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
+}
+
+#custom-menu button:hover {
+  background-color: white;
+  color: black;
+}
+#custom-menu,
 #hud {
   align-items: center;
   background-color: lightgrey;
@@ -91,5 +117,8 @@ p {
   box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
   display: flex;
   height: 60px;
+}
+
+#difficultySelect {
   margin: 40px 0 0 0;
 }

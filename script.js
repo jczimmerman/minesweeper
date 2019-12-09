@@ -191,6 +191,10 @@ dropDown.addEventListener('input', event => {
     resetboi();
   }
 })
+
+let customOpen = false;
+document.querySelector('button.custom').addEventListener('mousedown', event => {
+})
 drawGrid();
 
 const bombPlacement = (height, width, amt) => {
