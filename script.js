@@ -129,7 +129,7 @@ const tileReveal = (event) => {
   }
 
   const timer = () => {
-    timerCounter += 1;
+    timerCounter < 999 ? timerCounter += 1 : timerCounter = 999;
     let timerEl = document.querySelector(".timer");
     timerEl.textContent = timerCounter.toString().padStart(3, 0);
     if (gameWon(grid, document.querySelectorAll('tr'))) {
