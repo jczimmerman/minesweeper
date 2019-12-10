@@ -4,6 +4,11 @@
   padding: 0;
 }
 
+@font-face {
+  font-family: 'ReturnofGanon';
+  src: url('ReturnofGanon.ttf') format('truetype');
+}
+
 html {
   background: linear-gradient(white, grey);
   background-size: cover;
@@ -13,6 +18,7 @@ html {
 body {
   margin: 0 auto;
   width: fit-content;
+
 }
 
 tr {
@@ -84,6 +90,12 @@ select,
   width: 40px;
 }
 
+.timer {
+  border: 0;
+  font-family: monospace;
+  font-size: 20px;
+}
+
 button:hover {
   background-color: red;
   color: white;
@@ -97,8 +109,11 @@ select:hover {
   background-color: white;
 }
 
-p {
-  margin: 0 auto;
+
+p.win-message {
+  text-align: center;
+  font-size: 50px;
+  font-family: 'ReturnofGanon', monospace;
 }
 
 .selected {
@@ -131,6 +146,11 @@ p {
   box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
   display: flex;
   height: 60px;
+  justify-content: space-between;
+}
+
+#hud div {
+  display: flex;
 }
 
 #custom-menu {
