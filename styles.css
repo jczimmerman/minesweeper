@@ -10,15 +10,13 @@
 }
 
 html {
-  background: linear-gradient(white, grey);
-  background-size: cover;
-  height: 100%;
+  background: no-repeat linear-gradient(white, grey);
+  background-color: grey;
 }
 
 body {
   margin: 0 auto;
   width: fit-content;
-
 }
 
 tr {
