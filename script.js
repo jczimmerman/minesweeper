@@ -77,7 +77,7 @@ const expand = (gridObject) => {
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
           elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
           elementObject.removeEventListener('mousedown', tileReveal);
-          elementObject.classList.add('selected');
+          elementObject.classList.add('selected', `number${bombCheck(grid[row + y][column + x])}`);
           if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)) {
             grid[row + y][column + x].expanded = true;
             expand(grid[row + y][column + x]);
@@ -147,7 +147,7 @@ const tileReveal = (event) => {
         clearInterval(intervalId);
         event.target.textContent = '💥';
       } else {
-        event.target.classList.add('selected');
+        event.target.classList.add('selected', `number${bombCheck(gridObject)}`);
         event.target.textContent = bombCheck(gridObject) === 0 ? ' ' : bombCheck(gridObject);
         if (event.target.textContent === ' ') expand(elementToGrid(event.target));
       }
