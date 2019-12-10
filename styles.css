@@ -5,7 +5,7 @@
 }
 
 html {
-  background: linear-gradient(white, lightgrey);
+  background: linear-gradient(white, grey);
   background-size: cover;
   height: 100%;
 }
@@ -33,6 +33,32 @@ td {
 
 td:hover {
   background-color: white;
+}
+
+
+.number1 {
+  color: #009e56;
+}
+.number2 {
+  color: #0057c5;
+}
+.number3 {
+  color: #9b00a5;
+}
+.number4 {
+  color: #ff0000;
+}
+.number5 {
+  color: #d40000;
+}
+.number6 {
+  color: #9e0000;
+}
+.number7 {
+  color: #640000;
+}
+.number8 {
+  color: #000000;
 }
 
 table {
