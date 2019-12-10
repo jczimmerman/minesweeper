@@ -90,8 +90,8 @@ select,
   width: 40px;
 }
 
-.timer {
-  border: 0;
+.timer,
+.flagCounter {
   font-family: monospace;
   font-size: 20px;
 }
