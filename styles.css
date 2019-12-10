@@ -4,9 +4,15 @@
   padding: 0;
 }
 
+html {
+  background: linear-gradient(white, grey);
+  background-size: cover;
+  height: 100%;
+}
+
 body {
-  width: fit-content;
   margin: 0 auto;
+  width: fit-content;
 }
 
 tr {
@@ -14,18 +20,51 @@ tr {
 }
 
 td {
-  display: flex;
-  width: 40px;
-  height: 40px;
-  border: 1px solid grey;
-  background-color: lightgrey;
-  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
-  font-weight: bold;
   align-items: center;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  display: flex;
+  font-weight: bold;
+  height: 40px;
   justify-content: center;
+  width: 40px;
+}
+
+td:hover {
+  background-color: white;
+}
+
+
+.number1 {
+  color: #009e56;
+}
+.number2 {
+  color: #0057c5;
+}
+.number3 {
+  color: #9b00a5;
+}
+.number4 {
+  color: #ff0000;
+}
+.number5 {
+  color: #d40000;
+}
+.number6 {
+  color: #9e0000;
+}
+.number7 {
+  color: #640000;
+}
+.number8 {
+  color: #000000;
 }
 
 table {
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
 }
 
@@ -33,31 +72,71 @@ button,
 select,
 .timer,
 .flagCounter {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  color: blue;
+  align-items: center;
   background: lightgrey;
-  border-radius: 5px;
   border: 1px solid grey;
+  border-radius: 5px;
+  color: blue;
+  display: flex;
+  height: 40px;
+  justify-content: center;
   margin: 0 3px;
+  width: 40px;
+}
+
+button:hover {
+  background-color: red;
+  color: white;
 }
 
 select {
   width: 160px;
 }
 
-p {
-  margin: 0 auto;
+select:hover {
+  background-color: white;
 }
 
-#hud {
-  display: flex;
-  align-items: center;
-  margin: 40px 0 10px 0;
+p {
+  margin: 0 auto;
 }
 
 .selected {
   box-shadow: 0 0 0 black;
 
+}
+
+.selected:hover {
+  background-color: lightgrey;
+}
+
+#custom-menu input {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
+}
+
+#custom-menu button:hover {
+  background-color: white;
+  color: black;
+}
+
+#custom-menu,
+#hud {
+  align-items: center;
+  background-color: lightgrey;
+  border: 2px solid black;
+  border-bottom-width: 0px;
+  box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
+  display: flex;
+  height: 60px;
+}
+
+#custom-menu {
+  display: none;
+}
+
+#difficultySelect {
+  margin: 40px 0 0 0;
 }
