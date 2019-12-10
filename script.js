@@ -22,8 +22,23 @@ const drawGrid = () => {
     document.querySelector('table').appendChild(tableRow);
   }
 }
+const flagCount = () => {
+  let flags = 0;
+  for (let array of grid){
+    for(let element of array){
+      if (element.isFlagged) flags++;
+    }
+  }
+  return flags;
+}
 
+const flagUpdate = () => {
+  document.querySelector('.flagCounter').textContent = bombTotal - flagCount();
+}
 
+window.addEventListener('load', event=>{
+  flagUpdate();
+});
 
 const elementToGrid = (element) => {
   let gridColumn;
@@ -70,7 +85,8 @@ const expand = (gridObject) => {
   for (let y = -1; y <= 1; y++) {
     if (grid[row + y] !== undefined) {
       for (let x = -1; x <= 1; x++) {
-        if ((grid[row + y][column + x] !== undefined)) {
+        if ((grid[row + y][column + x] !== undefined && grid[row + y][column + x].isFlagged !== true)) {
+          grid[row + y][column + x].isFlagged = false;
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
           elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
           elementObject.removeEventListener('mousedown', tileReveal);
@@ -167,6 +183,7 @@ const tileReveal = (event) => {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
   }
+  flagUpdate();
 }
 
 let dropDown = document.getElementById('difficulty');
@@ -242,6 +259,7 @@ const resetboi = () => {
   first = true;
   clearboi(tableEl);
   drawGrid();
+  flagUpdate();
 }
 
 let buttonEl = document.querySelector('button');
