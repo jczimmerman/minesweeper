@@ -291,3 +291,12 @@ const customReset = () => {
 let buttonEl = document.querySelector('button');
 buttonEl.addEventListener('click', resetboi);
 document.querySelector('#custom-menu button').addEventListener('click', customReset);
+
+//for testing purposes
+const colorCheck = () => {
+  let row = document.querySelectorAll('td');
+  for (let i = 0; i < 9 ; i++) {
+    row[i].textContent = i === 0 ? ' ' : i;
+    row[i].classList.add('selected', `number${i}`);
+  }
+}
