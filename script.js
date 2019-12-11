@@ -33,15 +33,17 @@ const drawGrid = () => {
 
 let longHold = false;
 const holdStart = (event) => {
+  let quickTouch = true;
   event.preventDefault();
   let timeout;
   timeout = setTimeout(() => {
-    longHold = true
+    longHold = true;
+    quickTouch = false;
     tileReveal(event);
-  }, 400);
+  }, 300);
   event.target.addEventListener('touchend', () => {
     clearTimeout(timeout);
-    tileReveal(event);
+    if (quickTouch) tileReveal(event);
   });
 }
 
