@@ -29,6 +29,8 @@ td {
   border: 1px solid grey;
   box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
   display: flex;
+  font-family: monospace;
+  font-size: 20px;
   font-weight: bold;
   height: 40px;
   justify-content: center;

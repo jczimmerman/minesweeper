@@ -19,14 +19,24 @@ const drawGrid = () => {
       cell.addEventListener("contextmenu", event => {
         event.preventDefault();
       });
+      cell.addEventListener('touchstart', holdStart);
+
     }
     document.querySelector('table').appendChild(tableRow);
   }
 }
+
+const holdStart = (event) => {
+  let timeout;
+  const held = () => {
+      console.log('flag');
+  }
+  timeout = setTimeout(held, 300);
+}
 const flagCount = () => {
   let flags = 0;
-  for (let array of grid){
-    for(let element of array){
+  for (let array of grid) {
+    for (let element of array) {
       if (element.isFlagged) flags++;
     }
   }
@@ -37,7 +47,7 @@ const flagUpdate = () => {
   document.querySelector('.flagCounter').textContent = bombTotal - flagCount();
 }
 
-window.addEventListener('load', event=>{
+window.addEventListener('load', event => {
   flagUpdate();
 });
 
@@ -312,7 +322,7 @@ document.querySelector('#custom-menu button').addEventListener('click', customRe
 //for testing purposes
 const colorCheck = () => {
   let row = document.querySelectorAll('td');
-  for (let i = 0; i < 9 ; i++) {
+  for (let i = 0; i < 9; i++) {
     row[i].textContent = i === 0 ? ' ' : i;
     row[i].classList.add('selected', `number${i}`);
   }
