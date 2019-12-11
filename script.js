@@ -26,13 +26,15 @@ const drawGrid = () => {
   }
 }
 
+let longHold = false;
 const holdStart = (event) => {
   let timeout;
-  const held = () => {
-      console.log('flag');
-  }
-  timeout = setTimeout(held, 300);
+  timeout = setTimeout(() => longHold = true, 400);
+  event.target.addEventListener('touchend', () => {
+    clearTimeout(timeout);
+  });
 }
+
 const flagCount = () => {
   let flags = 0;
   for (let array of grid) {
@@ -147,7 +149,7 @@ const tileReveal = (event) => {
     }
   }
 
-  if (event.button == 0) {
+  if (event.button == 0 && longHold === false) {
     if (first === true) {
       bombPlacement(height, width, bombTotal);
       firstCheck();
@@ -179,7 +181,7 @@ const tileReveal = (event) => {
       }
     }
   }
-  if (event.button == 2) {
+  if (event.button == 2 || longHold === true) {
     if (gridObject.isFlagged === false) {
       gridObject.isFlagged = true;
       event.target.textContent = "🚩";
@@ -187,6 +189,7 @@ const tileReveal = (event) => {
       gridObject.isFlagged = false;
       event.target.textContent = "";
     }
+    longHold = false;
   }
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
