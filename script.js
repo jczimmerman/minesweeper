@@ -236,7 +236,7 @@ dropDown.addEventListener('input', event => {
     } else if (dropDown.selectedIndex === 2) {
       height = 20;
       width = 20;
-      bombTotal = 60;
+      bombTotal = 80;
     }
     document.getElementById('custom-menu').style.display = 'none';
     customOpen = false;
