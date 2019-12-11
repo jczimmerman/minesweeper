@@ -3,6 +3,11 @@ let height = 9;
 let width = 9;
 let bombTotal = 12;
 
+const removeAllListeners = target => {
+  target.removeEventListener('mousedown', tileReveal);
+  target.removeEventListener('touchstart', holdStart);
+}
+
 const drawGrid = () => {
   for (row = 0; row < height; row++) {
     let tableRow = document.createElement('tr');
@@ -28,10 +33,15 @@ const drawGrid = () => {
 
 let longHold = false;
 const holdStart = (event) => {
+  event.preventDefault();
   let timeout;
-  timeout = setTimeout(() => longHold = true, 400);
+  timeout = setTimeout(() => {
+    longHold = true
+    tileReveal(event);
+  }, 400);
   event.target.addEventListener('touchend', () => {
     clearTimeout(timeout);
+    tileReveal(event);
   });
 }
 
@@ -104,7 +114,7 @@ const expand = (gridObject) => {
           grid[row + y][column + x].isFlagged = false;
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
           elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
-          elementObject.removeEventListener('mousedown', tileReveal);
+          removeAllListeners(elementObject);
           elementObject.classList.add('selected', `number${bombCheck(grid[row + y][column + x])}`);
           if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)) {
             grid[row + y][column + x].expanded = true;
@@ -149,19 +159,19 @@ const tileReveal = (event) => {
     }
   }
 
-  if (event.button == 0 && longHold === false) {
+  if (event.button == 0 || longHold === false) {
     if (first === true) {
       bombPlacement(height, width, bombTotal);
       firstCheck();
       intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
-      event.target.removeEventListener("mousedown", tileReveal);
+      removeAllListeners(event.target);
       if (gridObject.isBomb === true) {
         for (let row = 0; row < height; row++) {
           for (let column = 0; column < width; column++) {
             let square = document.querySelectorAll('tr')[row].children[column]
-            square.removeEventListener('mousedown', tileReveal);
+            removeAllListeners(square)
             if (grid[row][column].isBomb) {
               square.textContent = '💣';
               square.classList.add('selected');
@@ -194,7 +204,7 @@ const tileReveal = (event) => {
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
-      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+      removeAllListeners(document.querySelectorAll('td')[i]);
     }
   }
   flagUpdate();
@@ -261,7 +271,7 @@ const win = () => {
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
-      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+      removeAllListeners(document.querySelectorAll('td')[i]);
     }
   }
 }
