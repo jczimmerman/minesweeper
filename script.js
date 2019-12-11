@@ -31,8 +31,9 @@ const drawGrid = () => {
   }
 }
 
-let longHold = false;
+let longHold;
 const holdStart = (event) => {
+  longHold = false;
   let quickTouch = true;
   event.preventDefault();
   let timeout;
@@ -201,7 +202,7 @@ const tileReveal = (event) => {
       gridObject.isFlagged = false;
       event.target.textContent = "";
     }
-    longHold = false;
+    longHold = undefined;
   }
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
