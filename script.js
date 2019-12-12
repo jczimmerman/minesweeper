@@ -221,6 +221,7 @@ let dropDown = document.getElementById('difficulty');
 dropDown.addEventListener('input', event => {
   if (dropDown.selectedIndex === 3) {
     difficulty = 'custom';
+    loadScore();
     if (!customOpen) {
       document.getElementById('custom-menu').style.display = 'flex';
       customOpen = true;
@@ -234,16 +235,19 @@ dropDown.addEventListener('input', event => {
       width = 9;
       bombTotal = 12;
       difficulty = 'easy';
+      loadScore()
     } else if (dropDown.selectedIndex === 1) {
       height = 12;
       width = 12;
       bombTotal = 20;
       difficulty = 'medium';
+      loadScore();
     } else if (dropDown.selectedIndex === 2) {
       height = 20;
       width = 20;
       difficulty = 'hard';
       bombTotal = 80;
+      loadScore();
     }
     document.getElementById('custom-menu').style.display = 'none';
     customOpen = false;
