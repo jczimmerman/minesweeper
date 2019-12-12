@@ -19,6 +19,14 @@ body {
   width: fit-content;
 }
 
+h1 {
+  font-family: 'ReturnofGanon';
+  font-size: 70px;
+  margin-top: 50px;
+  text-align: center;
+
+}
+
 tr {
   display: flex;
 }
@@ -29,6 +37,8 @@ td {
   border: 1px solid grey;
   box-shadow: inset 2px 2px 3px white, inset -2px -2px 3px black;
   display: flex;
+  font-family: monospace;
+  font-size: 20px;
   font-weight: bold;
   height: 40px;
   justify-content: center;
@@ -162,5 +172,5 @@ p.win-message {
 }
 
 #difficultySelect {
-  margin: 40px 0 0 0;
+  margin: 10px 0 0 0;
 }

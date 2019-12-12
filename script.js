@@ -4,6 +4,11 @@ let width = 9;
 let bombTotal = 12;
 let difficulty = 'easy';
 
+const removeAllListeners = target => {
+  target.removeEventListener('mousedown', tileReveal);
+  target.removeEventListener('touchstart', holdStart);
+}
+
 const drawGrid = () => {
   for (row = 0; row < height; row++) {
     let tableRow = document.createElement('tr');
@@ -20,14 +25,34 @@ const drawGrid = () => {
       cell.addEventListener("contextmenu", event => {
         event.preventDefault();
       });
+      cell.addEventListener('touchstart', holdStart);
+
     }
     document.querySelector('table').appendChild(tableRow);
   }
 }
+
+let longHold;
+const holdStart = (event) => {
+  longHold = false;
+  let quickTouch = true;
+  event.preventDefault();
+  let timeout;
+  timeout = setTimeout(() => {
+    longHold = true;
+    quickTouch = false;
+    tileReveal(event);
+  }, 300);
+  event.target.addEventListener('touchend', () => {
+    clearTimeout(timeout);
+    if (quickTouch) tileReveal(event);
+  });
+}
+
 const flagCount = () => {
   let flags = 0;
-  for (let array of grid){
-    for(let element of array){
+  for (let array of grid) {
+    for (let element of array) {
       if (element.isFlagged) flags++;
     }
   }
@@ -38,7 +63,7 @@ const flagUpdate = () => {
   document.querySelector('.flagCounter').textContent = bombTotal - flagCount();
 }
 
-window.addEventListener('load', event=>{
+window.addEventListener('load', event => {
   flagUpdate();
   loadScore();
 });
@@ -94,7 +119,7 @@ const expand = (gridObject) => {
           grid[row + y][column + x].isFlagged = false;
           let elementObject = document.querySelectorAll('tr')[row + y].children[column + x];
           elementObject.textContent = bombCheck(grid[row + y][column + x]) === 0 ? ' ' : bombCheck(grid[row + y][column + x]);
-          elementObject.removeEventListener('mousedown', tileReveal);
+          removeAllListeners(elementObject);
           elementObject.classList.add('selected', `number${bombCheck(grid[row + y][column + x])}`);
           if ((elementObject.textContent === ' ') && (grid[row + y][column + x].expanded === false)) {
             grid[row + y][column + x].expanded = true;
@@ -139,19 +164,19 @@ const tileReveal = (event) => {
     timerCounter < 999 ? timerCounter += 1 : timerCounter = 999;
   }
 
-  if (event.button == 0) {
+  if (event.button == 0 || longHold === false) {
     if (first === true) {
       bombPlacement(height, width, bombTotal);
       firstCheck();
       intervalId = setInterval(timer, 1000);
     }
     if (gridObject.isFlagged === false) {
-      event.target.removeEventListener("mousedown", tileReveal);
+      removeAllListeners(event.target);
       if (gridObject.isBomb === true) {
         for (let row = 0; row < height; row++) {
           for (let column = 0; column < width; column++) {
             let square = document.querySelectorAll('tr')[row].children[column]
-            square.removeEventListener('mousedown', tileReveal);
+            removeAllListeners(square)
             if (grid[row][column].isBomb) {
               square.textContent = '💣';
               square.classList.add('selected');
@@ -171,7 +196,7 @@ const tileReveal = (event) => {
       }
     }
   }
-  if (event.button == 2) {
+  if (event.button == 2 || longHold === true) {
     if (gridObject.isFlagged === false) {
       gridObject.isFlagged = true;
       event.target.textContent = "🚩";
@@ -179,11 +204,12 @@ const tileReveal = (event) => {
       gridObject.isFlagged = false;
       event.target.textContent = "";
     }
+    longHold = undefined;
   }
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
-      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+      removeAllListeners(document.querySelectorAll('td')[i]);
     }
     if (difficulty !== 'custom') saveScore(difficulty, timerCounter);
   }
@@ -216,8 +242,8 @@ dropDown.addEventListener('input', event => {
     } else if (dropDown.selectedIndex === 2) {
       height = 20;
       width = 20;
-      bombTotal = 60;
       difficulty = 'hard';
+      bombTotal = 80;
     }
     document.getElementById('custom-menu').style.display = 'none';
     customOpen = false;
@@ -255,7 +281,7 @@ const win = () => {
   if (gameWon(grid, document.querySelectorAll('tr'))) {
     document.querySelector('p.win-message').textContent = 'You win!';
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
-      document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
+      removeAllListeners(document.querySelectorAll('td')[i]);
     }
   }
 }
@@ -319,7 +345,7 @@ document.querySelector('#custom-menu button').addEventListener('click', customRe
 //for testing purposes
 const colorCheck = () => {
   let row = document.querySelectorAll('td');
-  for (let i = 0; i < 9 ; i++) {
+  for (let i = 0; i < 9; i++) {
     row[i].textContent = i === 0 ? ' ' : i;
     row[i].classList.add('selected', `number${i}`);
   }
