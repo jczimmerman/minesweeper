@@ -222,6 +222,7 @@ dropDown.addEventListener('input', event => {
   if (dropDown.selectedIndex === 3) {
     difficulty = 'custom';
     loadScore();
+    document.getElementById('highscore').style.display = "none";
     if (!customOpen) {
       document.getElementById('custom-menu').style.display = 'flex';
       customOpen = true;
@@ -236,18 +237,21 @@ dropDown.addEventListener('input', event => {
       bombTotal = 12;
       difficulty = 'easy';
       loadScore()
+      document.getElementById('highscore').style.display = "flex";
     } else if (dropDown.selectedIndex === 1) {
       height = 12;
       width = 12;
       bombTotal = 20;
       difficulty = 'medium';
       loadScore();
+      document.getElementById('highscore').style.display = "flex";
     } else if (dropDown.selectedIndex === 2) {
       height = 20;
       width = 20;
       difficulty = 'hard';
       bombTotal = 80;
       loadScore();
+      document.getElementById('highscore').style.display = "flex";
     }
     document.getElementById('custom-menu').style.display = 'none';
     customOpen = false;
