@@ -136,7 +136,8 @@ p.win-message {
 }
 
 #custom-menu,
-#hud {
+#hud,
+#highscore {
   align-items: center;
   background-color: lightgrey;
   border: 2px solid black;
@@ -145,6 +146,11 @@ p.win-message {
   display: flex;
   height: 60px;
   justify-content: space-between;
+}
+
+#highscore {
+  color: blue;
+  font-size: 15px;
 }
 
 #hud div {

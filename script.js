@@ -2,6 +2,7 @@ let grid = [];
 let height = 9;
 let width = 9;
 let bombTotal = 12;
+let difficulty = 'easy';
 
 const drawGrid = () => {
   for (row = 0; row < height; row++) {
@@ -39,6 +40,7 @@ const flagUpdate = () => {
 
 window.addEventListener('load', event=>{
   flagUpdate();
+  loadScore();
 });
 
 const elementToGrid = (element) => {
@@ -129,12 +131,12 @@ const tileReveal = (event) => {
   }
 
   const timer = () => {
-    timerCounter < 999 ? timerCounter += 1 : timerCounter = 999;
     let timerEl = document.querySelector(".timer");
     timerEl.textContent = timerCounter.toString().padStart(3, 0);
     if (gameWon(grid, document.querySelectorAll('tr'))) {
       clearInterval(intervalId);
     }
+    timerCounter < 999 ? timerCounter += 1 : timerCounter = 999;
   }
 
   if (event.button == 0) {
@@ -183,6 +185,7 @@ const tileReveal = (event) => {
     for (let i = 0; i < document.querySelectorAll('td').length; i++) {
       document.querySelectorAll('td')[i].removeEventListener('mousedown', tileReveal);
     }
+    if (difficulty !== 'custom') saveScore(difficulty, timerCounter);
   }
   flagUpdate();
 }
@@ -191,6 +194,7 @@ let customOpen = false;
 let dropDown = document.getElementById('difficulty');
 dropDown.addEventListener('input', event => {
   if (dropDown.selectedIndex === 3) {
+    difficulty = 'custom';
     if (!customOpen) {
       document.getElementById('custom-menu').style.display = 'flex';
       customOpen = true;
@@ -203,14 +207,17 @@ dropDown.addEventListener('input', event => {
       height = 9;
       width = 9;
       bombTotal = 12;
+      difficulty = 'easy';
     } else if (dropDown.selectedIndex === 1) {
       height = 12;
       width = 12;
       bombTotal = 20;
+      difficulty = 'medium';
     } else if (dropDown.selectedIndex === 2) {
       height = 20;
       width = 20;
       bombTotal = 60;
+      difficulty = 'hard';
     }
     document.getElementById('custom-menu').style.display = 'none';
     customOpen = false;
@@ -316,4 +323,35 @@ const colorCheck = () => {
     row[i].textContent = i === 0 ? ' ' : i;
     row[i].classList.add('selected', `number${i}`);
   }
+}
+
+const saveScore = (difficulty, score) => {
+  if (score < getScore()) {
+    document.cookie = `${difficulty}Score=${score};max-age=31536000`;
+    loadScore();
+  }
+}
+
+const loadScore = () => {
+  if (difficulty !== 'custom') {
+    if (getScore() > 999){
+      document.querySelector('#highscore').textContent = `You currently don't have a highscore for this difficulty!`
+    }
+    else{
+      document.querySelector('#highscore').textContent = `Highscore: ${getScore()}`;
+    }
+  }
+}
+
+const getScore = () => {
+  let currentDifficultyScore = 1000;
+  let cookieArr = document.cookie.split(';');
+  for (let i = 0; i < cookieArr.length; i++){
+    let name = cookieArr[i].split('=');
+    name[0] = name[0].trim();
+    if (name[0] === difficulty + 'Score') {
+      currentDifficultyScore = name[1];
+    }
+  }
+  return parseInt(currentDifficultyScore);
 }
