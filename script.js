@@ -350,7 +350,7 @@ const saveScore = (difficulty, score) => {
 const loadScore = () => {
   if (difficulty !== 'custom') {
     if (getScore() > 999) {
-      document.querySelector('#highscore').textContent = `You currently don't have a highscore for this difficulty!`
+      document.querySelector('#highscore').textContent = `You don't have a highscore for this difficulty!`
     } else {
       document.querySelector('#highscore').textContent = `Highscore: ${getScore()}`;
     }
