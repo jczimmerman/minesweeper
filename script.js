@@ -301,7 +301,7 @@ const resetboi = () => {
   timerCounter = 0;
   document.querySelector(".timer").textContent = timerCounter.toString().padStart(3, 0);
   let tableEl = document.querySelector('table');
-  for (i = 0; i < 20; i++) {
+  while (grid.length > 0) {
     grid.pop([]);
   }
   first = true;
