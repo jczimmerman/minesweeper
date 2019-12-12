@@ -176,6 +176,11 @@ p.win-message {
 
 #custom-menu {
   display: none;
+  justify-content: flex-start;
+}
+
+#custom-menu button {
+  margin-left: 20px;
 }
 
 #difficultySelect {
