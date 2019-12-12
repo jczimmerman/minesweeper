@@ -274,26 +274,6 @@ const bombPlacement = (height, width, amt) => {
   if (counter !== 0) bombPlacement(height, width, counter);
 }
 
-//for testing purposes
-const win = () => {
-  bombPlacement(height, width, bombTotal);
-  for (let row = 0; row < height; row++) {
-    for (let column = 0; column < width; column++) {
-      document.querySelectorAll('tr')[row].children[column].textContent = bombCheck(grid[row][column]);
-      if (grid[row][column].isBomb) {
-        grid[row][column].isFlagged = true;
-        document.querySelectorAll('tr')[row].children[column].textContent = "🚩";
-      }
-    }
-  }
-  if (gameWon(grid, document.querySelectorAll('tr'))) {
-    document.querySelector('p.win-message').textContent = 'You win!';
-    for (let i = 0; i < document.querySelectorAll('td').length; i++) {
-      removeAllListeners(document.querySelectorAll('td')[i]);
-    }
-  }
-}
-
 const clearboi = (element) => {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
@@ -316,6 +296,7 @@ const resetboi = () => {
 }
 
 const customReset = () => {
+  console.log('new game');
   height = Math.floor(Number(document.querySelector('input.height').value));
   if (height < 1) {
     height = 1;
@@ -336,11 +317,11 @@ const customReset = () => {
     if (bombTotal > (height * width) - 6) {
       bombTotal = (height * width) - 6;
       document.querySelector('input.bombs').value = (height * width) - 6;
-    } else {
-      if (bombTotal > (height * width) - 9) {
-        bombTotal = (height * width) - 9;
-        document.querySelector('input.bombs').value = (height * width) - 9;
-      }
+    }
+  } else {
+    if (bombTotal > (height * width) - 9) {
+      bombTotal = (height * width) - 9;
+      document.querySelector('input.bombs').value = (height * width) - 9;
     }
   }
   resetboi();
@@ -368,10 +349,9 @@ const saveScore = (difficulty, score) => {
 
 const loadScore = () => {
   if (difficulty !== 'custom') {
-    if (getScore() > 999){
+    if (getScore() > 999) {
       document.querySelector('#highscore').textContent = `You currently don't have a highscore for this difficulty!`
-    }
-    else{
+    } else {
       document.querySelector('#highscore').textContent = `Highscore: ${getScore()}`;
     }
   }
@@ -380,7 +360,7 @@ const loadScore = () => {
 const getScore = () => {
   let currentDifficultyScore = 1000;
   let cookieArr = document.cookie.split(';');
-  for (let i = 0; i < cookieArr.length; i++){
+  for (let i = 0; i < cookieArr.length; i++) {
     let name = cookieArr[i].split('=');
     name[0] = name[0].trim();
     if (name[0] === difficulty + 'Score') {
